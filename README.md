@@ -16,3 +16,6 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+## Create database container (available at default PORT:5432):
+docker run --name x_budget_db -p 5432:5432 -e POSTGRES_USER=x_budget -e POSTGRES_PASSWORD=blork_erlang -d postgres
