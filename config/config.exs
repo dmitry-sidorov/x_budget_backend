@@ -25,6 +25,11 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+ #Guardian setup
+config :x_budget_backend, XBudgetBackendWeb.Auth.Guardian,
+  issuer: "x_budget_backend",
+  secret_key: "N1p5HC8ReCCfQ9fZqzKXflfNuhDiCI9HVGBXY3DEt/hCopzzUh/9giZwbOALQOe8"
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
