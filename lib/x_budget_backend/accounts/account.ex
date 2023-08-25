@@ -5,6 +5,7 @@ defmodule XBudgetBackend.Accounts.Account do
   schema "accounts" do
     field :email, :string
     field :hashed_password, :string
+    has_one :user, XBudgetBackend.Users.User
 
     timestamps()
   end
@@ -14,5 +15,8 @@ defmodule XBudgetBackend.Accounts.Account do
     account
     |> cast(attrs, [:email, :hashed_password])
     |> validate_required([:email, :hashed_password])
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+$/, message: "must have the @ sign and no spaces")
+    |> validate_length(:email, max: 160)
+    |> unique_constraint(:email)
   end
 end
