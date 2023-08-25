@@ -7,5 +7,6 @@ defmodule XBudgetBackendWeb.Router do
 
   scope "/api", XBudgetBackendWeb do
     pipe_through :api
+    get "/", DefaultController, :index
   end
 end
