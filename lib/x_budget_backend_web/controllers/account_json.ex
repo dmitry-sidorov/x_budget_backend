@@ -15,6 +15,14 @@ defmodule XBudgetBackendWeb.AccountJSON do
     %{data: data(account)}
   end
 
+  def account_token(%{account: account, token: token}) do
+    %{
+      id: account.id,
+      email: account.email,
+      token: token
+    }
+  end
+
   defp data(%Account{} = account) do
     %{
       id: account.id,

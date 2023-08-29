@@ -21,7 +21,8 @@ defmodule XBudgetBackendWeb.UserJSON do
       first_name: user.first_name,
       last_name: user.last_name,
       gender: user.gender,
-      age: user.age
+      age: user.age,
+      account_id: user.account_id
     }
   end
 end

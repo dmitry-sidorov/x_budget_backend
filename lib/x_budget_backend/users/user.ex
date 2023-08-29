@@ -15,7 +15,7 @@ defmodule XBudgetBackend.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:accound_id, :first_name, :last_name, :gender, :age])
-    |> validate_required([:accound_id])
+    |> cast(attrs, [:account_id, :first_name, :last_name, :gender, :age])
+    |> validate_required([:account_id])
   end
 end
