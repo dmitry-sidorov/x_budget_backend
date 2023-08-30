@@ -2,7 +2,7 @@ defmodule XBudgetBackendWeb.AccountController do
   use XBudgetBackendWeb, :controller
 
   alias XBudgetBackend.{Accounts, Accounts.Account, Users, Users.User}
-  alias XBudgetBackendWeb.{Auth.Guardian}
+  alias XBudgetBackendWeb.{Auth.Guardian, Auth.ErrorResponse}
 
   action_fallback XBudgetBackendWeb.FallbackController
 
@@ -24,6 +24,16 @@ defmodule XBudgetBackendWeb.AccountController do
   def show(conn, %{"id" => id}) do
     account = Accounts.get_account!(id)
     render(conn, :show, account: account)
+  end
+
+  def sign_in(conn, %{"email" => email, "hashed_password" => hashed_password}) do
+    case Guardian.authenticate(email, hashed_password) do
+      {:ok, account, token} ->
+        conn
+        |> put_status(:ok)
+        |> render(:account_token, %{account: account, token: token})
+      {:error, :unauthorized} -> raise "Email or Password incorrect."
+    end
   end
 
   def update(conn, %{"id" => id, "account" => account_params}) do

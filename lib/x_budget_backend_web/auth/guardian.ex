@@ -24,7 +24,7 @@ defmodule XBudgetBackendWeb.Auth.Guardian do
       account ->
         case validate_password(password, account.hashed_password) do
           true -> create_token(account)
-          false -> {:error, :unathorized}
+          false -> {:error, :unauthorized}
         end
       end
     end
