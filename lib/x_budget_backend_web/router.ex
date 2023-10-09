@@ -28,7 +28,7 @@ defmodule XBudgetBackendWeb.Router do
     get "/users", UserController, :index
   end
 
-  scope "/api", XBudgetBackend do
+  scope "/api", XBudgetBackendWeb do
     pipe_through [:api, :auth]
     get "/accounts/by_id/:id", AccountController, :show
   end
