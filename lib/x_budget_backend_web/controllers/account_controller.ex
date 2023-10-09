@@ -6,6 +6,13 @@ defmodule XBudgetBackendWeb.AccountController do
 
   action_fallback XBudgetBackendWeb.FallbackController
 
+  defp is_authorized_account(conn, _opts) do
+    %{params: %{"account" => params}} = conn
+    account = Accounts.get_account!(params["id"])
+
+    # if conn.assigns.account.id ==
+  end
+
   def index(conn, _params) do
     accounts = Accounts.list_accounts()
     render(conn, :index, accounts: accounts)
@@ -22,8 +29,8 @@ defmodule XBudgetBackendWeb.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id)
-    render(conn, :show, account: account)
+    # account = Accounts.get_account!(id)
+    render(conn, :show, account: conn.assigns.account)
   end
 
   def sign_in(conn, %{"email" => email, "hashed_password" => hashed_password}) do

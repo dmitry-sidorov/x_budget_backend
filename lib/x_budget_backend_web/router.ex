@@ -12,10 +12,12 @@ defmodule XBudgetBackendWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
   end
 
   pipeline :auth do
     plug XBudgetBackendWeb.Auth.Pipeline
+    plug XBudgetBackendWeb.Auth.SetAccount
   end
 
   scope "/api", XBudgetBackendWeb do
