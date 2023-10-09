@@ -12,10 +12,12 @@ defmodule XBudgetBackendWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
   end
 
   pipeline :auth do
     plug XBudgetBackendWeb.Auth.Pipeline
+    plug XBudgetBackendWeb.Auth.SetAccount
   end
 
   scope "/api", XBudgetBackendWeb do
@@ -31,5 +33,6 @@ defmodule XBudgetBackendWeb.Router do
   scope "/api", XBudgetBackendWeb do
     pipe_through [:api, :auth]
     get "/accounts/by_id/:id", AccountController, :show
+    post "/accounts/update", AccountController, :update
   end
 end
