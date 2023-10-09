@@ -2,7 +2,7 @@ defmodule XBudgetBackendWeb.AccountController do
   use XBudgetBackendWeb, :controller
 
   alias XBudgetBackend.{Accounts, Accounts.Account, Users, Users.User}
-  alias XBudgetBackendWeb.{Auth.Guardian, Auth.ErrorResponse}
+  alias XBudgetBackendWeb.{Auth.Guardian}
 
   action_fallback XBudgetBackendWeb.FallbackController
 

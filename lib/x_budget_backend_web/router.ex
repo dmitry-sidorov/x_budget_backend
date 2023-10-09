@@ -14,6 +14,10 @@ defmodule XBudgetBackendWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug XBudgetBackendWeb.Auth.Pipeline
+  end
+
   scope "/api", XBudgetBackendWeb do
     pipe_through :api
     get "/", DefaultController, :index
@@ -22,5 +26,10 @@ defmodule XBudgetBackendWeb.Router do
     # debug
     get "/accounts", AccountController, :index
     get "/users", UserController, :index
+  end
+
+  scope "/api", XBudgetBackendWeb do
+    pipe_through [:api, :auth]
+    get "/accounts/by_id/:id", AccountController, :show
   end
 end
