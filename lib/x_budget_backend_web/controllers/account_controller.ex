@@ -50,6 +50,16 @@ defmodule XBudgetBackendWeb.AccountController do
     end
   end
 
+  def sign_out(conn, %{}) do
+    account = conn.assigns[:account]
+    token = Guardian.Plug.current_token(conn)
+    Guardian.revoke(token)
+    conn
+    |> Plug.Conn.clear_session()
+    |> put_status(:ok)
+    |> render(:account_token, %{account: account, token: nil})
+  end
+
   def update(conn, %{"account" => account_params}) do
     account = Accounts.get_account!(account_params["id"])
 
