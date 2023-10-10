@@ -33,6 +33,11 @@ config :x_budget_backend, XBudgetBackendWeb.Auth.Guardian,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :guardian, Guardian.DB,
+  repo: XBudgetBackend.Repo,
+  schema_name: "guardian_tokens",
+  sweep_interval: 60 # every 60 minutes sweeper removes expired tokens from DB
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
