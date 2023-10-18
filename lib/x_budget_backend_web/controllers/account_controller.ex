@@ -32,8 +32,8 @@ defmodule XBudgetBackendWeb.AccountController do
   end
 
   def show(conn, %{"id" => id}) do
-    account = Accounts.get_account!(id)
-    render(conn, :show, account: account)
+    account = Accounts.get_full_account(id)
+    render(conn, :show_full_account, account: account)
   end
 
   def sign_in(conn, %{"email" => email, "hashed_password" => hashed_password}) do
