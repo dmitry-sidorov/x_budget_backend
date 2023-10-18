@@ -1,5 +1,6 @@
 defmodule XBudgetBackendWeb.AccountJSON do
-  alias XBudgetBackend.Accounts.Account
+  alias XBudgetBackend.{Accounts.Account}
+  alias XBudgetBackendWeb.UserJSON
 
   @doc """
   Renders a list of accounts.
@@ -13,6 +14,14 @@ defmodule XBudgetBackendWeb.AccountJSON do
   """
   def show(%{account: account}) do
     %{data: data(account)}
+  end
+
+  def show_full_account(%{account: account}) do
+    %{
+      id: account.id,
+      email: account.email,
+      user: UserJSON.show(%{ user: account.user })
+    }
   end
 
   def account_token(%{account: account, token: token}) do
