@@ -15,7 +15,7 @@ defmodule XBudgetBackendWeb.Auth.SetAccount do
 
       if account_id == nil, do: raise ErrorResponse.Unauthorized
 
-      account = Accounts.get_account!(account_id)
+      account = Accounts.get_full_account(account_id)
       cond do
         account_id && account -> assign(conn, :account, account)
         true -> assign(conn, :account, nil)

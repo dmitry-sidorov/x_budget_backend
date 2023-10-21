@@ -4,20 +4,11 @@ defmodule XBudgetBackendWeb.AccountController do
   alias XBudgetBackend.{Accounts, Accounts.Account, Users, Users.User}
   alias XBudgetBackendWeb.{Auth.Guardian, Auth.ErrorResponse}
 
-  plug :is_authorized_account when action in [:update, :delete]
+  import XBudgetBackendWeb.Auth.AuthorizedPlug
+
+  plug :is_authorized when action in [:update, :delete]
 
   action_fallback XBudgetBackendWeb.FallbackController
-
-  defp is_authorized_account(conn, _opts) do
-    %{params: %{"account" => params}} = conn
-    account = Accounts.get_account!(params["id"])
-
-    if conn.assigns.account.id == account.id do
-      conn
-    else
-      raise ErrorResponse.Forbidden
-    end
-  end
 
   def index(conn, _params) do
     accounts = Accounts.list_accounts()
