@@ -24,7 +24,7 @@ defmodule XBudgetBackendWeb.AccountController do
 
   def show(conn, %{"id" => id}) do
     account = Accounts.get_full_account(id)
-    render(conn, :show_full_account, account: account)
+    render(conn, :full_account, account: account)
   end
 
   def sign_in(conn, %{"email" => email, "hashed_password" => hashed_password}) do
@@ -61,11 +61,18 @@ defmodule XBudgetBackendWeb.AccountController do
     |> render(:account_token, %{account: account, token: nil})
   end
 
-  def update(conn, %{"account" => account_params}) do
-    account = Accounts.get_account!(account_params["id"])
+  def current_account(conn, %{}) do
+    conn
+    |> put_status(:ok)
+    |> render(:full_account, %{account: conn.assigns.account})
+  end
 
-    with {:ok, %Account{} = account} <- Accounts.update_account(account, account_params) do
-      render(conn, :show, account: account)
+  def update(conn, %{"current_hash" => current_hash, "account" => account_params}) do
+    case Guardian.validate_password(current_hash, conn.assigns.account.hashed_password) do
+      true ->
+        {:ok, account} = Accounts.update_account(conn.assigns.account, account_params)
+        render(conn, :show, account: account)
+      false -> raise ErrorResponse.Unauthorized, message: "Password incorrect!"
     end
   end
 
