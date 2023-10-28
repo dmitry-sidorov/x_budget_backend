@@ -1,22 +1,33 @@
-defmodule XBudgetBackend.Schema.AccountTest do
+defmodule XBudgetBackend.Schema.UserTest do
   use XBudgetBackend.Support.SchemaCase
-  alias XBudgetBackend.Accounts.Account
+  alias XBudgetBackend.Users.User
 
   @expected_fields_with_types [
     {:id, :id},
-    {:email, :string},
-    {:hashed_password, :string},
+    {:first_name, :string},
+    {:last_name, :string},
+    {:gender, :string},
+    {:age, :integer},
+    {:account_id, :id},
     {:inserted_at, :naive_datetime},
     {:updated_at, :naive_datetime},
   ]
 
-  @optional_fields [:id, :inserted_at, :updated_at]
+  @optional_fields [
+    :id,
+    :first_name,
+    :last_name,
+    :gender,
+    :age,
+    :inserted_at,
+    :updated_at
+  ]
 
-  describe "account fields and types" do
-    test "account has correct fields and types" do
+  describe "user fields and types" do
+    test "user has correct fields and types" do
       actual_fields_with_types =
-        for field <- Account.__schema__(:fields) do
-          type = Account.__schema__(:type, field)
+        for field <- User.__schema__(:fields) do
+          type = User.__schema__(:type, field)
           {field, type}
         end
 
@@ -28,28 +39,23 @@ defmodule XBudgetBackend.Schema.AccountTest do
     test "success: returns a valid changeset when valid arguments given" do
       valid_params = valid_params(@expected_fields_with_types)
 
-      changeset = Account.changeset(%Account{}, valid_params)
+      changeset = User.changeset(%User{}, valid_params)
 
       assert %Changeset{valid?: true, changes: changes} = changeset
 
-      mutated = [:hashed_password]
-
-      for {field, _} <- @expected_fields_with_types, field not in mutated do
+      for {field, _} <- @expected_fields_with_types do
         actual = Map.get(changes, field)
         expected = valid_params[Atom.to_string(field)]
 
         assert actual == expected,
           "Values did not match for field: #{field}/nexpected: #{inspect(expected)}\nactual: #{inspect(actual)}"
       end
-
-      assert Bcrypt.verify_pass(valid_params["hashed_password"], changes.hashed_password),
-        "Password: #{inspect(valid_params["hashed_password"])} does not match \nhash: #{inspect(changes.hashed_password)}"
     end
 
     test "error: returns an error changeset when uncastable values given" do
       invalid_params = invalid_params(@expected_fields_with_types)
 
-      assert %Changeset{valid?: false, errors: errors} = Account.changeset(%Account{}, invalid_params)
+      assert %Changeset{valid?: false, errors: errors} = User.changeset(%User{}, invalid_params)
 
       for {field, _} <- @expected_fields_with_types do
         assert errors[field], "The field #{field} is missing from errors."
@@ -60,7 +66,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
     end
 
     test "error: returns an error changeset when required fields are missing" do
-      assert %Changeset{valid?: false, errors: errors} = Account.changeset(%Account{}, %{})
+      assert %Changeset{valid?: false, errors: errors} = User.changeset(%User{}, %{})
 
       for {field, _} <- @expected_fields_with_types, field not in @optional_fields do
         assert errors[field], "The field #{field} is missing from errors."
@@ -73,5 +79,6 @@ defmodule XBudgetBackend.Schema.AccountTest do
         refute errors[field], "The optional field #{field} is required when it shouldn't be."
       end
     end
+
   end
 end
