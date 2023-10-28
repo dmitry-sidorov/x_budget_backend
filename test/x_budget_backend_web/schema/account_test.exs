@@ -1,6 +1,6 @@
 defmodule XBudgetBackend.Schema.AccountTest do
   use XBudgetBackend.Support.SchemaCase
-  alias XBudgetBackend.Accounts.Account
+  alias XBudgetBackend.{Accounts.Account, Repo}
 
   @expected_fields_with_types [
     {:id, :id},
@@ -72,6 +72,31 @@ defmodule XBudgetBackend.Schema.AccountTest do
       for field <- @optional_fields do
         refute errors[field], "The optional field #{field} is required when it shouldn't be."
       end
+    end
+
+    test "error: returns error changeset when an email address is reused" do
+      # Initial test DB connection request
+      Ecto.Adapters.SQL.Sandbox.checkout(Repo)
+
+      {:ok, existing_account} =
+        %Account{}
+        |> Account.changeset(valid_params(@expected_fields_with_types))
+        |> Repo.insert()
+
+      params_with_reused_email =
+        @expected_fields_with_types
+        |> valid_params
+        |> Map.put("email", existing_account.email)
+
+      changeset_with_reused_email = Account.changeset(%Account{}, params_with_reused_email)
+
+      assert {:error, %Changeset{valid?: false, errors: errors}} =
+        Repo.insert(changeset_with_reused_email)
+
+      assert errors[:email], "The field :email is missing from errors."
+
+      {_, meta} = assert errors[:email]
+      assert meta[:constraint] == :unique, "The validation type, #{meta[:validation]}, is incorrect"
     end
   end
 end
