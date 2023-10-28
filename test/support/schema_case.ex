@@ -8,6 +8,10 @@ defmodule XBudgetBackend.Support.SchemaCase do
     end
   end
 
+  setup _ do
+    Ecto.Adapters.SQL.Sandbox.mode(XBudgetBackend.Repo, :manual)
+  end
+
   defp get_random_integer, do: Enum.random(0..100)
 
   defp get_random_naive_datetime do
