@@ -19,6 +19,7 @@ defmodule XBudgetBackend.Support.SchemaCase do
   def valid_params(fields_with_types) do
     valid_value_by_type = %{
       id: fn -> get_random_integer() end,
+      integer: fn -> get_random_integer() end,
       string: fn -> Faker.Lorem.word() end,
       naive_datetime: fn -> get_random_naive_datetime() end
     }
@@ -34,6 +35,7 @@ defmodule XBudgetBackend.Support.SchemaCase do
   def invalid_params(fields_with_types) do
     invalid_value_by_type = %{
       id: fn -> get_random_naive_datetime() end,
+      integer: fn -> get_random_naive_datetime() end,
       string: fn -> get_random_naive_datetime() end,
       naive_datetime: fn -> Faker.Lorem.word() end
     }
