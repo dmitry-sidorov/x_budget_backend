@@ -1,6 +1,5 @@
 defmodule XBudgetBackend.Schema.AccountTest do
-  use ExUnit.Case
-  alias Ecto.Changeset
+  use XBudgetBackend.Support.SchemaCase
   alias XBudgetBackend.Accounts.Account
 
   @expected_fields_with_types [
@@ -27,13 +26,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
 
   describe "changeset/2" do
     test "success: returns a valid changeset when valid arguments given" do
-      valid_params = %{
-        "id" => Enum.random(1..1000),
-        "email" => "test@email.com",
-        "hashed_password" => "test password",
-        "inserted_at" => NaiveDateTime.local_now(),
-        "updated_at" => NaiveDateTime.local_now(),
-      }
+      valid_params = valid_params(@expected_fields_with_types)
 
       changeset = Account.changeset(%Account{}, valid_params)
 
@@ -54,13 +47,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
     end
 
     test "error: returns an error changeset when uncastable values given" do
-      invalid_params = %{
-        "id" => NaiveDateTime.local_now(),
-        "email" => NaiveDateTime.local_now(),
-        "hashed_password" => NaiveDateTime.local_now(),
-        "inserted_at" => "broken value",
-        "updated_at" => "string here",
-      }
+      invalid_params = invalid_params(@expected_fields_with_types)
 
       assert %Changeset{valid?: false, errors: errors} = Account.changeset(%Account{}, invalid_params)
 
@@ -68,7 +55,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :cast, "The validation type, #{meta[:validation]}, is incorrect"
+        assert meta[:validation] == :cast, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
     end
 
@@ -79,7 +66,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :required, "The validation type, #{meta[:validation]}, is incorrect"
+        assert meta[:validation] == :required, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
 
       for field <- @optional_fields do
