@@ -7,7 +7,7 @@ defmodule XBudgetBackend.Schema.UserTest do
     {:first_name, :string},
     {:last_name, :string},
     {:gender, :string},
-    {:age, :integer},
+    {:birthdate, :naive_datetime},
     {:account_id, :id},
     {:inserted_at, :naive_datetime},
     {:updated_at, :naive_datetime},
@@ -18,7 +18,7 @@ defmodule XBudgetBackend.Schema.UserTest do
     :first_name,
     :last_name,
     :gender,
-    :age,
+    :birthdate,
     :inserted_at,
     :updated_at
   ]

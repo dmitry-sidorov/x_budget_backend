@@ -7,7 +7,7 @@ defmodule XBudgetBackend.Users.User do
     :first_name,
     :last_name,
     :gender,
-    :age,
+    :birthdate,
     :inserted_at,
     :updated_at
   ]
@@ -15,7 +15,7 @@ defmodule XBudgetBackend.Users.User do
     field :first_name, :string
     field :last_name, :string
     field :gender, :string
-    field :age, :integer
+    field :birthdate, :naive_datetime
     belongs_to :account, XBudgetBackend.Accounts.Account
 
     timestamps()

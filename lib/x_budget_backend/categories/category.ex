@@ -1,7 +1,7 @@
 defmodule XBudgetBackend.Categories.Category do
   use Ecto.Schema
   import Ecto.Changeset
-  alias  XBudgetBackend.{Domains.Domain, Payments.Payment}
+  alias XBudgetBackend.{Domains.Domain, Payments.Payment}
 
   schema "categories" do
     field :title, :string

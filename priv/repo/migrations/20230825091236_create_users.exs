@@ -6,7 +6,7 @@ defmodule XBudgetBackend.Repo.Migrations.CreateUsers do
       add :first_name, :string
       add :last_name, :string
       add :gender, :string
-      add :age, :integer
+      add :birthdate, :naive_datetime
       add :account_id, references(:accounts, on_delete: :delete_all)
 
       timestamps()
