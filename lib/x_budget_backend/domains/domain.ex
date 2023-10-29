@@ -15,6 +15,6 @@ defmodule XBudgetBackend.Domains.Domain do
   def changeset(domain, attrs) do
     domain
     |> cast(attrs, [:title, :percentage])
-    |> validate_required([:title, :percentage])
+    |> validate_required([:title])
   end
 end
