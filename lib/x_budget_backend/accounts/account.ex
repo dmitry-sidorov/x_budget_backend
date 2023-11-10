@@ -1,6 +1,7 @@
 defmodule XBudgetBackend.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
+  alias XBudgetBackend.{Users.User, Payments.Payment}
 
   @optional_fields [:id, :inserted_at, :updated_at]
   schema "accounts" do
