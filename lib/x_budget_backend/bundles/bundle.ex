@@ -6,7 +6,7 @@ defmodule XBudgetBackend.Bundles.Bundle do
     field :summary_amount, :float
     field :amount_updated_at, :naive_datetime
     field :percentage, :float
-    field :group_id, :id
+    belongs_to :group, XBudgetBackend.Groups.Group
 
     timestamps()
   end

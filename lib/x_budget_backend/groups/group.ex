@@ -5,6 +5,7 @@ defmodule XBudgetBackend.Groups.Group do
   schema "groups" do
     field :name, :string
     field :description, :string
+    has_many :bundle, XBudgetBackend.Bundles.Bundle
 
     timestamps()
   end
