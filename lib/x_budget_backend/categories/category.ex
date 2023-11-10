@@ -1,16 +1,24 @@
 defmodule XBudgetBackend.Categories.Category do
   use Ecto.Schema
   import Ecto.Changeset
-  alias XBudgetBackend.{Domains.Domain, Payments.Payment}
 
   schema "categories" do
     field :title, :string
-    belongs_to :domain, Domain
-    has_many :payment, Payment
+    belongs_to :bundle, XBudgetBackend.Bundles.Bundle
+    belongs_to :group, XBudgetBackend.Groups.Group
+    has_many :invoice, XBudgetBackend.Invoices.Invoice
 
     timestamps()
   end
 
+  @spec changeset(
+          {map(), map()}
+          | %{
+              :__struct__ => atom() | %{:__changeset__ => map(), optional(any()) => any()},
+              optional(atom()) => any()
+            },
+          :invalid | %{optional(:__struct__) => none(), optional(atom() | binary()) => any()}
+        ) :: Ecto.Changeset.t()
   @doc false
   def changeset(category, attrs) do
     category

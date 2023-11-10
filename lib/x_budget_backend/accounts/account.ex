@@ -7,8 +7,9 @@ defmodule XBudgetBackend.Accounts.Account do
   schema "accounts" do
     field :email, :string
     field :hashed_password, :string
-    has_one :user, User
-    has_many :payment, Payment
+    has_one :user, XBudgetBackend.Users.User
+    has_many :income, XBudgetBackend.Incomes.Income
+    has_many :invoice, XBudgetBackend.Invoices.Invoice
 
     timestamps()
   end
