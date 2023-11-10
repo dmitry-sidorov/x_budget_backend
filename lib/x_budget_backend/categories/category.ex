@@ -6,6 +6,7 @@ defmodule XBudgetBackend.Categories.Category do
     field :title, :string
     belongs_to :bundle, XBudgetBackend.Bundles.Bundle
     belongs_to :group, XBudgetBackend.Groups.Group
+    has_many :invoice, XBudgetBackend.Invoices.Invoice
 
     timestamps()
   end
