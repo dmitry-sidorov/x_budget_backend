@@ -7,6 +7,7 @@ defmodule XBudgetBackend.Groups.Group do
     field :description, :string
     has_many :bundle, XBudgetBackend.Bundles.Bundle
     has_many :category, XBudgetBackend.Categories.Category
+    has_many :income, XBudgetBackend.Incomes.Income
 
     timestamps()
   end

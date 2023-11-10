@@ -7,6 +7,7 @@ defmodule XBudgetBackend.Accounts.Account do
     field :email, :string
     field :hashed_password, :string
     has_one :user, XBudgetBackend.Users.User
+    has_many :income, XBudgetBackend.Incomes.Income
 
     timestamps()
   end
