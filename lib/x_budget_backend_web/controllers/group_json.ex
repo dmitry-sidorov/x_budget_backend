@@ -1,4 +1,5 @@
 defmodule XBudgetBackendWeb.GroupJSON do
+  alias XBudgetBackendWeb.BundleJSON
   alias XBudgetBackend.Groups.Group
 
   @doc """
@@ -21,5 +22,11 @@ defmodule XBudgetBackendWeb.GroupJSON do
       name: group.name,
       description: group.description
     }
+  end
+
+  def show_full(%{group: group}) do
+    %{ data: bundles } = BundleJSON.index(%{bundles: group.bundle})
+    data = Map.merge(data(group), %{ bundles: bundles })
+    %{ data: data }
   end
 end

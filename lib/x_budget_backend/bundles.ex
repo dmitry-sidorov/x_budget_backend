@@ -4,9 +4,30 @@ defmodule XBudgetBackend.Bundles do
   """
 
   import Ecto.Query, warn: false
-  alias XBudgetBackend.Repo
+  alias XBudgetBackend.{Repo, Bundles.Bundle}
 
-  alias XBudgetBackend.Bundles.Bundle
+  @default_bundles_attrs [
+    {"mandatory_payments", 55},
+    {"entertainment", 10},
+    {"savings", 10},
+    {"self_education", 10},
+    {"financial_cushion", 10},
+    {"gifts", 5},
+  ]
+
+  defp get_default_bundles_cast(group_id) do
+    for {title, percentage} <- @default_bundles_attrs do
+      params = %{"group_id" => group_id, "title" => title, "percentage" => percentage}
+      %Bundle{}
+      |> Bundle.changeset(params)
+    end
+  end
+
+  defp get_default_bundles_params() do
+    for {title, percentage} <- @default_bundles_attrs do
+      %{"title" => title, "percentage" => percentage}
+    end
+  end
 
   @doc """
   Returns the list of bundles.
@@ -18,7 +39,9 @@ defmodule XBudgetBackend.Bundles do
 
   """
   def list_bundles do
-    Repo.all(Bundle)
+    Bundle
+    |> preload([:group])
+    |> Repo.all
   end
 
   @doc """
@@ -49,10 +72,21 @@ defmodule XBudgetBackend.Bundles do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_bundle(attrs \\ %{}) do
-    %Bundle{}
+  def create_bundle(group, attrs \\ %{}) do
+    group
+    |> Ecto.build_assoc(:bundle)
     |> Bundle.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Creates predefined list of bundles for given group by id.
+  """
+  def create_default_bundles(group) do
+    # Repo.insert_all(get_default_bundles_cast(group_id))
+    for bundle_params <- get_default_bundles_params() do
+      create_bundle(group, bundle_params)
+    end
   end
 
   @doc """

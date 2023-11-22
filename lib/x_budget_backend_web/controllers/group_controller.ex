@@ -1,8 +1,7 @@
 defmodule XBudgetBackendWeb.GroupController do
   use XBudgetBackendWeb, :controller
 
-  alias XBudgetBackend.Groups
-  alias XBudgetBackend.Groups.Group
+  alias XBudgetBackend.{Bundles, Groups, Groups.Group}
 
   action_fallback XBudgetBackendWeb.FallbackController
 
@@ -15,11 +14,26 @@ defmodule XBudgetBackendWeb.GroupController do
     with {:ok, %Group{} = group} <- Groups.create_group(group_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/groups/#{group}")
       |> render(:show, group: group)
     end
   end
 
+  def create_default(conn, %{"name" => name}) do
+    with {:ok, %Group{} = group} <- Groups.create_default_group(name) do
+      Bundles.create_default_bundles(group)
+      conn
+      |> put_status(:created)
+      |> render(:show, group: group)
+    end
+  end
+
+  @spec show_full_group(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def show_full_group(conn, %{"id" => id}) do
+    group = Groups.get_full_group!(id)
+    render(conn, :show_full, group: group)
+  end
+
+  @spec show(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def show(conn, %{"id" => id}) do
     group = Groups.get_group!(id)
     render(conn, :show, group: group)

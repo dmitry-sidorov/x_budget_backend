@@ -28,6 +28,8 @@ defmodule XBudgetBackendWeb.Router do
     # debug
     get "/accounts", AccountController, :index
     get "/users", UserController, :index
+    post "/groups/create_default", GroupController, :create_default
+    get "/groups/show/:id", GroupController, :show_full_group
   end
 
   scope "/api", XBudgetBackendWeb do

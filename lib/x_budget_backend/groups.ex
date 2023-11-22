@@ -4,9 +4,7 @@ defmodule XBudgetBackend.Groups do
   """
 
   import Ecto.Query, warn: false
-  alias XBudgetBackend.Repo
-
-  alias XBudgetBackend.Groups.Group
+  alias XBudgetBackend.{Repo, Groups.Group, Bundles}
 
   @doc """
   Returns the list of groups.
@@ -37,6 +35,12 @@ defmodule XBudgetBackend.Groups do
   """
   def get_group!(id), do: Repo.get!(Group, id)
 
+  def get_full_group!(id) do
+    Group
+    |> where(id: ^id)
+    |> preload([:bundle])
+    |> Repo.one()
+  end
   @doc """
   Creates a group.
 
@@ -49,9 +53,29 @@ defmodule XBudgetBackend.Groups do
       {:error, %Ecto.Changeset{}}
 
   """
+
+
   def create_group(attrs \\ %{}) do
     %Group{}
     |> Group.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a group with default bundles
+
+  ## Examples
+
+      iex> create_group(%{field: value})
+      {:ok, %Group{}}
+
+      iex> create_group(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_default_group(name) do
+    %Group{}
+    |> Group.changeset(%{name: name})
     |> Repo.insert()
   end
 
