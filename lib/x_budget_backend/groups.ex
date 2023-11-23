@@ -62,24 +62,6 @@ defmodule XBudgetBackend.Groups do
   end
 
   @doc """
-  Creates a group with default bundles
-
-  ## Examples
-
-      iex> create_group(%{field: value})
-      {:ok, %Group{}}
-
-      iex> create_group(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_default_group(name) do
-    %Group{}
-    |> Group.changeset(%{name: name})
-    |> Repo.insert()
-  end
-
-  @doc """
   Updates a group.
 
   ## Examples

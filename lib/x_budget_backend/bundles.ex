@@ -7,21 +7,13 @@ defmodule XBudgetBackend.Bundles do
   alias XBudgetBackend.{Repo, Bundles.Bundle}
 
   @default_bundles_attrs [
-    {"mandatory_payments", 55},
-    {"entertainment", 10},
-    {"savings", 10},
-    {"self_education", 10},
-    {"financial_cushion", 10},
-    {"gifts", 5},
+    {"Mandatory payments", 55},
+    {"Entertainment", 10},
+    {"Savings", 10},
+    {"Self education", 10},
+    {"Financial cushion", 10},
+    {"Gifts", 5},
   ]
-
-  defp get_default_bundles_cast(group_id) do
-    for {title, percentage} <- @default_bundles_attrs do
-      params = %{"group_id" => group_id, "title" => title, "percentage" => percentage}
-      %Bundle{}
-      |> Bundle.changeset(params)
-    end
-  end
 
   defp get_default_bundles_params() do
     for {title, percentage} <- @default_bundles_attrs do
@@ -83,7 +75,6 @@ defmodule XBudgetBackend.Bundles do
   Creates predefined list of bundles for given group by id.
   """
   def create_default_bundles(group) do
-    # Repo.insert_all(get_default_bundles_cast(group_id))
     for bundle_params <- get_default_bundles_params() do
       create_bundle(group, bundle_params)
     end

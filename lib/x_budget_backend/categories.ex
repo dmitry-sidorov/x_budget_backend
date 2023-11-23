@@ -42,15 +42,16 @@ defmodule XBudgetBackend.Categories do
 
   ## Examples
 
-      iex> create_category(%{field: value})
+      iex> create_category(%Bundle{}, %{field: value})
       {:ok, %Category{}}
 
-      iex> create_category(%{field: bad_value})
+      iex> create_category(%Bundle{}, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_category(attrs \\ %{}) do
-    %Category{}
+  def create_category(bundle, attrs \\ %{}) do
+    bundle
+    |> Ecto.build_assoc(:category)
     |> Category.changeset(attrs)
     |> Repo.insert()
   end
