@@ -8,6 +8,12 @@ defmodule XBudgetBackend.Categories do
 
   alias XBudgetBackend.Categories.Category
 
+  @default_mandatory_categories_titles [
+    "Appartment",
+    "Fuel",
+    "Groceries",
+  ]
+
   @doc """
   Returns the list of categories.
 
@@ -54,6 +60,13 @@ defmodule XBudgetBackend.Categories do
     |> Ecto.build_assoc(:category)
     |> Category.changeset(attrs)
     |> Repo.insert()
+  end
+
+
+  def create_default_categories(bundle) do
+    for title <- @default_mandatory_categories_titles do
+      create_category(bundle, %{title: title})
+    end
   end
 
   @doc """
