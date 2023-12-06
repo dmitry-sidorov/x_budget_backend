@@ -25,7 +25,7 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
- #Guardian setup
+# Guardian setup
 config :x_budget_backend, XBudgetBackendWeb.Auth.Guardian,
   issuer: "x_budget_backend",
   secret_key: "N1p5HC8ReCCfQ9fZqzKXflfNuhDiCI9HVGBXY3DEt/hCopzzUh/9giZwbOALQOe8"
@@ -36,7 +36,8 @@ config :phoenix, :json_library, Jason
 config :guardian, Guardian.DB,
   repo: XBudgetBackend.Repo,
   schema_name: "guardian_tokens",
-  sweep_interval: 60 # every 60 minutes sweeper removes expired tokens from DB
+  # every 60 minutes sweeper removes expired tokens from DB
+  sweep_interval: 60
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

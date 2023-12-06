@@ -7,7 +7,7 @@ defmodule XBudgetBackend.Schema.AccountTest do
     {:email, :string},
     {:hashed_password, :string},
     {:inserted_at, :naive_datetime},
-    {:updated_at, :naive_datetime},
+    {:updated_at, :naive_datetime}
   ]
 
   @optional_fields [:id, :inserted_at, :updated_at]
@@ -39,23 +39,26 @@ defmodule XBudgetBackend.Schema.AccountTest do
         expected = valid_params[Atom.to_string(field)]
 
         assert actual == expected,
-          "Values did not match for field: #{field}/nexpected: #{inspect(expected)}\nactual: #{inspect(actual)}"
+               "Values did not match for field: #{field}/nexpected: #{inspect(expected)}\nactual: #{inspect(actual)}"
       end
 
       assert Bcrypt.verify_pass(valid_params["hashed_password"], changes.hashed_password),
-        "Password: #{inspect(valid_params["hashed_password"])} does not match \nhash: #{inspect(changes.hashed_password)}"
+             "Password: #{inspect(valid_params["hashed_password"])} does not match \nhash: #{inspect(changes.hashed_password)}"
     end
 
     test "error: returns an error changeset when uncastable values given" do
       invalid_params = invalid_params(@expected_fields_with_types)
 
-      assert %Changeset{valid?: false, errors: errors} = Account.changeset(%Account{}, invalid_params)
+      assert %Changeset{valid?: false, errors: errors} =
+               Account.changeset(%Account{}, invalid_params)
 
       for {field, _} <- @expected_fields_with_types do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :cast, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
+
+        assert meta[:validation] == :cast,
+               "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
     end
 
@@ -66,7 +69,9 @@ defmodule XBudgetBackend.Schema.AccountTest do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :required, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
+
+        assert meta[:validation] == :required,
+               "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
 
       for field <- @optional_fields do
@@ -91,12 +96,14 @@ defmodule XBudgetBackend.Schema.AccountTest do
       changeset_with_reused_email = Account.changeset(%Account{}, params_with_reused_email)
 
       assert {:error, %Changeset{valid?: false, errors: errors}} =
-        Repo.insert(changeset_with_reused_email)
+               Repo.insert(changeset_with_reused_email)
 
       assert errors[:email], "The field :email is missing from errors."
 
       {_, meta} = assert errors[:email]
-      assert meta[:constraint] == :unique, "The validation type, #{meta[:validation]}, is incorrect"
+
+      assert meta[:constraint] == :unique,
+             "The validation type, #{meta[:validation]}, is incorrect"
     end
   end
 end

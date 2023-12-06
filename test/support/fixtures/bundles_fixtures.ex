@@ -11,8 +11,8 @@ defmodule XBudgetBackend.BundlesFixtures do
     {:ok, bundle} =
       attrs
       |> Enum.into(%{
-        summary_amount: 120.5,
-        amount_updated_at: ~N[2023-11-09 17:34:00],
+        title: "test",
+        description: "some description",
         percentage: 120.5
       })
       |> XBudgetBackend.Bundles.create_bundle()

@@ -1,7 +1,8 @@
 defmodule XBudgetBackendWeb.Auth.Pipeline do
-  use Guardian.Plug.Pipeline, otp_app: :x_budget_backend,
-  module: XBudgetBackendWeb.Auth.Guardian,
-  error_handler: XBudgetBackendWeb.Auth.GuardianErrorHandler
+  use Guardian.Plug.Pipeline,
+    otp_app: :x_budget_backend,
+    module: XBudgetBackendWeb.Auth.Guardian,
+    error_handler: XBudgetBackendWeb.Auth.GuardianErrorHandler
 
   plug Guardian.Plug.VerifySession
   plug Guardian.Plug.VerifyHeader

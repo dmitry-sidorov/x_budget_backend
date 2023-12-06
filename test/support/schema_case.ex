@@ -16,7 +16,7 @@ defmodule XBudgetBackend.Support.SchemaCase do
 
   defp get_random_naive_datetime do
     get_random_integer()
-    |> Faker.NaiveDateTime.backward
+    |> Faker.NaiveDateTime.backward()
     |> NaiveDateTime.truncate(:second)
   end
 

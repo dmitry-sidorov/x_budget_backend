@@ -1,13 +1,14 @@
 defmodule XBudgetBackend.Bundles.Bundle do
   use Ecto.Schema
   import Ecto.Changeset
+  alias XBudgetBackend.{Categories.Category, Groups.Group}
 
   schema "bundles" do
-    field :summary_amount, :float
-    field :amount_updated_at, :naive_datetime
+    field :title, :string
+    field :description, :string
     field :percentage, :float
-    belongs_to :group, XBudgetBackend.Groups.Group
-    has_many :category, XBudgetBackend.Categories.Category
+    belongs_to :group, Group
+    has_many :category, Category
 
     timestamps()
   end
@@ -15,7 +16,7 @@ defmodule XBudgetBackend.Bundles.Bundle do
   @doc false
   def changeset(bundle, attrs) do
     bundle
-    |> cast(attrs, [:summary_amount, :amount_updated_at, :percentage])
-    |> validate_required([:percentage])
+    |> cast(attrs, [:title, :description, :percentage])
+    |> validate_required([:title, :percentage])
   end
 end

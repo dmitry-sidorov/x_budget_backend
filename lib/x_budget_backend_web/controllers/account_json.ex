@@ -17,7 +17,7 @@ defmodule XBudgetBackendWeb.AccountJSON do
   end
 
   def full_account(%{account: account}) do
-    with %{ "data" => user } <- UserJSON.show(%{ user: account.user }) do
+    with %{"data" => user} <- UserJSON.show(%{user: account.user}) do
       %{
         id: account.id,
         email: account.email,

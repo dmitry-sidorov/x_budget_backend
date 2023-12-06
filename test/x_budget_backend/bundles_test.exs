@@ -8,7 +8,7 @@ defmodule XBudgetBackend.BundlesTest do
 
     import XBudgetBackend.BundlesFixtures
 
-    @invalid_attrs %{summary_amount: nil, amount_updated_at: nil, percentage: nil}
+    @invalid_attrs %{title: nil, description: nil, percentage: nil}
 
     test "list_bundles/0 returns all bundles" do
       bundle = bundle_fixture()
@@ -21,11 +21,11 @@ defmodule XBudgetBackend.BundlesTest do
     end
 
     test "create_bundle/1 with valid data creates a bundle" do
-      valid_attrs = %{summary_amount: 120.5, amount_updated_at: ~N[2023-11-09 17:34:00], percentage: 120.5}
+      valid_attrs = %{title: "test", description: "some description", percentage: 120.5}
 
       assert {:ok, %Bundle{} = bundle} = Bundles.create_bundle(valid_attrs)
-      assert bundle.summary_amount == 120.5
-      assert bundle.amount_updated_at == ~N[2023-11-09 17:34:00]
+      assert bundle.title == "test"
+      assert bundle.description == "some description"
       assert bundle.percentage == 120.5
     end
 
@@ -35,11 +35,11 @@ defmodule XBudgetBackend.BundlesTest do
 
     test "update_bundle/2 with valid data updates the bundle" do
       bundle = bundle_fixture()
-      update_attrs = %{summary_amount: 456.7, amount_updated_at: ~N[2023-11-10 17:34:00], percentage: 456.7}
+      update_attrs = %{title: "another", description: "pam-pam", percentage: 456.7}
 
       assert {:ok, %Bundle{} = bundle} = Bundles.update_bundle(bundle, update_attrs)
-      assert bundle.summary_amount == 456.7
-      assert bundle.amount_updated_at == ~N[2023-11-10 17:34:00]
+      assert bundle.title == "another"
+      assert bundle.description == "pam-pam"
       assert bundle.percentage == 456.7
     end
 
