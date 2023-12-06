@@ -18,8 +18,8 @@ defmodule XBudgetBackendWeb.BundleJSON do
   defp data(%Bundle{} = bundle) do
     %{
       id: bundle.id,
-      summary_amount: bundle.summary_amount,
-      amount_updated_at: bundle.amount_updated_at,
+      title: bundle.title,
+      description: bundle.description,
       percentage: bundle.percentage
     }
   end

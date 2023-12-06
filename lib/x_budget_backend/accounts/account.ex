@@ -1,15 +1,15 @@
 defmodule XBudgetBackend.Accounts.Account do
   use Ecto.Schema
   import Ecto.Changeset
-  alias XBudgetBackend.{Users.User, Payments.Payment}
+  alias XBudgetBackend.{Users.User, Incomes.Income, Invoices.Invoice}
 
   @optional_fields [:id, :inserted_at, :updated_at]
   schema "accounts" do
     field :email, :string
     field :hashed_password, :string
-    has_one :user, XBudgetBackend.Users.User
-    has_many :income, XBudgetBackend.Incomes.Income
-    has_many :invoice, XBudgetBackend.Invoices.Invoice
+    has_one :user, User
+    has_many :income, Income
+    has_many :invoice, Invoice
 
     timestamps()
   end
