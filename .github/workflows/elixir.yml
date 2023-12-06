@@ -1,0 +1,112 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Elixir CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  MIX_ENV: test
+  # NOTE: make sure these versions match in Containerfile and .tool-versions
+  ELIXIR_VERSION_SPEC: "1.15.2"
+  OTP_VERSION_SPEC: "26.0"
+
+jobs:
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1.16
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION_SPEC }}
+          otp-version: ${{ env.OTP_VERSION_SPEC }}
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile dependencies
+        run: mix deps.compile
+      - name: Compile
+        run: mix compile
+
+  test:
+    name: Test
+    runs-on: ubuntu-22.04
+
+    services:
+      invoices_control_db_test:
+        image: postgres:latest
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: x_budget
+          POSTGRES_PASSWORD: blork_erlang
+          POSTGRES_HOST_AUTH_METHOD: 'trust'
+          POSTGRES_DB: x_budget_backend_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MIX_ENV: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1.16
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION_SPEC }}
+          otp-version: ${{ env.OTP_VERSION_SPEC }}
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile dependencies
+        run: mix deps.compile
+      - name: Setup database
+        env:
+          MIX_ENV: test
+          PGHOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run:
+          mix ecto.drop
+          mix ecto.create
+          mix ecto.migrate
+      - name: Run tests
+        env:
+          MIX_ENV: test
+          PGHOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        run:
+          mix test
+
+  check-formatted:
+    name: Check Formatted
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1.16
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION_SPEC }}
+          otp-version: ${{ env.OTP_VERSION_SPEC }}
+      - name: Install dependencies
+        run: mix deps.get
+      - name: Compile dependencies
+        run: mix deps.compile
+      - name: Check formatted
+        run: mix format --check-formatted
