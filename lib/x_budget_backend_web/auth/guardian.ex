@@ -17,10 +17,11 @@ defmodule XBudgetBackendWeb.Auth.Guardian do
     {:error, :no_id_provided}
   end
 
-
   def authenticate(email, password) do
     case Accounts.get_account_by_email(email) do
-      nil -> {:error, :unauthorized}
+      nil ->
+        {:error, :unauthorized}
+
       account ->
         case validate_password(password, account.hashed_password) do
           true -> create_token(account, :access)
@@ -33,7 +34,7 @@ defmodule XBudgetBackendWeb.Auth.Guardian do
     with {:ok, claims} <- decode_and_verify(token),
          {:ok, account} <- resource_from_claims(claims),
          {:ok, _old, {new_token, _new_claims}} = refresh(token) do
-    {:ok, account, new_token}
+      {:ok, account, new_token}
     end
   end
 

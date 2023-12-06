@@ -34,7 +34,11 @@ defmodule XBudgetBackend.IncomesTest do
 
     test "update_income/2 with valid data updates the income" do
       income = income_fixture()
-      update_attrs = %{description: "some updated description", income_date: ~N[2023-11-10 19:35:00]}
+
+      update_attrs = %{
+        description: "some updated description",
+        income_date: ~N[2023-11-10 19:35:00]
+      }
 
       assert {:ok, %Income{} = income} = Incomes.update_income(income, update_attrs)
       assert income.description == "some updated description"

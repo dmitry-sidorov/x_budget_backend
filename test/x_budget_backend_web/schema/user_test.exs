@@ -10,7 +10,7 @@ defmodule XBudgetBackend.Schema.UserTest do
     {:birthdate, :naive_datetime},
     {:account_id, :id},
     {:inserted_at, :naive_datetime},
-    {:updated_at, :naive_datetime},
+    {:updated_at, :naive_datetime}
   ]
 
   @optional_fields [
@@ -48,7 +48,7 @@ defmodule XBudgetBackend.Schema.UserTest do
         expected = valid_params[Atom.to_string(field)]
 
         assert actual == expected,
-          "Values did not match for field: #{field}/nexpected: #{inspect(expected)}\nactual: #{inspect(actual)}"
+               "Values did not match for field: #{field}/nexpected: #{inspect(expected)}\nactual: #{inspect(actual)}"
       end
     end
 
@@ -61,7 +61,9 @@ defmodule XBudgetBackend.Schema.UserTest do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :cast, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
+
+        assert meta[:validation] == :cast,
+               "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
     end
 
@@ -72,13 +74,14 @@ defmodule XBudgetBackend.Schema.UserTest do
         assert errors[field], "The field #{field} is missing from errors."
 
         {_, meta} = errors[field]
-        assert meta[:validation] == :required, "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
+
+        assert meta[:validation] == :required,
+               "The validation type, #{meta[:validation]}, is incorrect for field #{field}"
       end
 
       for field <- @optional_fields do
         refute errors[field], "The optional field #{field} is required when it shouldn't be."
       end
     end
-
   end
 end

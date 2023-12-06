@@ -29,7 +29,9 @@ defmodule XBudgetBackend.Accounts.Account do
     |> put_password_hash()
   end
 
-  defp put_password_hash(%Ecto.Changeset{valid?: true, changes: %{hashed_password: hashed_password}} = changeset) do
+  defp put_password_hash(
+         %Ecto.Changeset{valid?: true, changes: %{hashed_password: hashed_password}} = changeset
+       ) do
     change(changeset, hashed_password: Bcrypt.hash_pwd_salt(hashed_password))
   end
 

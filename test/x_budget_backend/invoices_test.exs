@@ -21,7 +21,11 @@ defmodule XBudgetBackend.InvoicesTest do
     end
 
     test "create_invoice/1 with valid data creates a invoice" do
-      valid_attrs = %{description: "some description", amount: 120.5, invoice_date: ~N[2023-11-09 19:50:00]}
+      valid_attrs = %{
+        amount: 120.5,
+        description: "some description",
+        invoice_date: ~N[2023-11-09 19:50:00]
+      }
 
       assert {:ok, %Invoice{} = invoice} = Invoices.create_invoice(valid_attrs)
       assert invoice.description == "some description"
@@ -35,7 +39,12 @@ defmodule XBudgetBackend.InvoicesTest do
 
     test "update_invoice/2 with valid data updates the invoice" do
       invoice = invoice_fixture()
-      update_attrs = %{description: "some updated description", amount: 456.7, invoice_date: ~N[2023-11-10 19:50:00]}
+
+      update_attrs = %{
+        amount: 456.7,
+        description: "some updated description",
+        invoice_date: ~N[2023-11-10 19:50:00]
+      }
 
       assert {:ok, %Invoice{} = invoice} = Invoices.update_invoice(invoice, update_attrs)
       assert invoice.description == "some updated description"

@@ -44,7 +44,6 @@ defmodule XBudgetBackend.Accounts do
     |> Repo.one()
   end
 
-
   @doc """
   Gets a single account.any()
 
